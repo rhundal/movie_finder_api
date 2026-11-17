@@ -13,11 +13,13 @@ const searchMovies = async (req, res) => {
         .json({ error: "Title query parameter is required" });
     }
 
+    const baseurl = process.env.OMDB_URL;
     const key = process.env.OMDB_API_KEY;
 
-    const response = await axios(
-      `http://www.omdbapi.com/?s=${title}&apikey=${key}`,
-    );
+    //   const response = await axios(`${baseurl}/?s=${title}&apikey=${key}`);
+    const response = await axios.get(baseurl, {
+      params: { s: title, apikey: key },
+    });
 
     res.status(200).json(response.data);
   } catch (error) {
@@ -34,12 +36,14 @@ const getMovieDetails = async (req, res) => {
     if (!id) {
       return res.status(400).json({ error: "Id query parameter is required" });
     }
-
+    const baseurl = process.env.OMDB_URL;
     const key = process.env.OMDB_API_KEY;
 
-    const response = await axios(
-      `http://www.omdbapi.com/?i=${id}&apikey=${key}`,
-    );
+    // const response = await axios(`${baseurl}/?i=${id}&apikey=${key}`);
+
+    const response = await axios.get(baseurl, {
+      params: { i: id, apikey: key },
+    });
 
     res.status(200).json(response.data);
   } catch (error) {
